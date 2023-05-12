@@ -225,7 +225,7 @@ resource "kubernetes_pod" "main" {
 
       env {
         name  = "CODER_INNER_IMAGE"
-        value = "docker pull ghcr.io/robrotheram/toolbox:latest"
+        value = "index.ghcr.io/robrotheram/toolbox:latest@sha256:069e84783d134841cbb5007a16d9025b6aed67bc5b95eecc118eb96dccd6de68"
       }
 
       env {
@@ -366,7 +366,7 @@ resource "coder_metadata" "workspace_info" {
   }   
   item {
     key   = "developer container"
-    value = "docker.io/codercom/enterprise-base"
+    value = "ghcr.io/robrotheram/toolbox:latest"
   }  
   item {
     key   = "envbox sysbox container runtime"
