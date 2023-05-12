@@ -10,9 +10,7 @@
 name: Create and publish a Docker image
 
 on:
-  create:
-    tags:
-      - v*
+  push
 
 env:
   REGISTRY: ghcr.io
@@ -50,18 +48,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  release:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Install
-      run: tar -cvf coder.tar main.tf README.md 
-    - name: Release Firmware
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: coder.tar
-        generateReleaseNotes: true
-        allowUpdates: true
-        token: ${{ secrets.GITHUB_TOKEN }}
+  
           
