@@ -89,6 +89,25 @@ data "coder_parameter" "dotfiles_url" {
   icon        = "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
 }
 
+data "coder_parameter" "repo_url" {
+  name        = "Repository"
+  description = "Repository to clone"
+  type        = "string"
+  default     = ""
+  mutable     = true 
+  icon        = "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
+}
+
+data "coder_parameter" "repo_dir" {
+  name        = "Workspace"
+  description = "Workspace to clone to"
+  type        = "string"
+  default     = ""
+  mutable     = true 
+  icon        = "/emojis/1f4c1.png"
+}
+
+
 provider "kubernetes" {
   # Authenticate via ~/.kube/config or a Coder-specific ServiceAccount, depending on admin preferences
   config_path = var.use_kubeconfig == true ? "~/.kube/config" : null
@@ -98,6 +117,7 @@ data "coder_git_auth" "github" {
   # Matches the ID of the git auth provider in Coder.
   id = "primary-github"
 }
+
 
 data "coder_workspace" "me" {}
 
@@ -118,7 +138,12 @@ resource "coder_agent" "main" {
   }
 
   login_before_ready = false  
-  env                     = { "DOTFILES_URI" = data.coder_parameter.dotfiles_url.value != "" ? data.coder_parameter.dotfiles_url.value : null }      
+  env                     = { 
+    "DOTFILES_URI"  = data.coder_parameter.dotfiles_url.value != "" ? data.coder_parameter.dotfiles_url.value : null 
+    "REPO_URL"      = data.coder_parameter.repo_url.value != "" ? data.coder_parameter.repo_url.value : null 
+    "REPO_DIR"      = data.coder_parameter.repo_dir.value != "" ? data.coder_parameter.repo_dir.value : null 
+  }      
+
   startup_script = <<EOT
     #!/bin/sh
 
@@ -137,6 +162,17 @@ resource "coder_agent" "main" {
     if [ -n "$DOTFILES_URI" ]; then
       echo "Installing dotfiles from $DOTFILES_URI"
       coder dotfiles -y "$DOTFILES_URI"
+    fi
+
+    if [ -n "$REPO_URL" ]; then
+      if [ -d "$REPO_DIR" ]; then
+        # Repository already exists, fetch updates
+        cd "$REPO_DIR"
+        git fetch
+      else
+        # Repository doesn't exist, clone it
+        git clone "$REPO_URL" "$REPO_DIR"
+      fi
     fi
 
   EOT
