@@ -51,6 +51,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
     - name: Install
       run: tar -cvf coder.tar main.tf README.md 
     - name: Release Firmware
