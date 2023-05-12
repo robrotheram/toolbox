@@ -1,4 +1,7 @@
-FROM ghcr.io/coder/envbox:latest
+FROM index.docker.io/codercom/enterprise-base:ubuntu
+# Run everything as root
+USER root
+
 LABEL org.opencontainers.image.source="https://github.com/robrotheram/toolbox"
 RUN apt-get update && apt-get install unzip zip jq -y
 ENV VERSION="1.20.4"
@@ -11,4 +14,6 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 RUN curl -O -L "https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz" && tar zxvf "helm-v3.12.0-linux-amd64.tar.gz" && mv linux-amd64/helm  /usr/local/bin/helm && chmod +x /usr/local/bin/helm && rm -rf linux-amd64
 ENV PATH="${PATH}:/usr/local/go/bin"
 
+# Set back to coder user
+USER coder
 

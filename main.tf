@@ -193,7 +193,7 @@ resource "kubernetes_pod" "main" {
   spec {
     container {
       name              = "dev"
-      image             = "ghcr.io/robrotheram/toolbox:main"
+      image             = "ghcr.io/coder/envbox:latest"
       image_pull_policy = "Always"
       command           = ["/envbox", "docker"]
 
@@ -225,7 +225,7 @@ resource "kubernetes_pod" "main" {
 
       env {
         name  = "CODER_INNER_IMAGE"
-        value = "index.docker.io/codercom/enterprise-base@sha256:069e84783d134841cbb5007a16d9025b6aed67bc5b95eecc118eb96dccd6de68"
+        value = "docker pull ghcr.io/robrotheram/toolbox:latest"
       }
 
       env {
