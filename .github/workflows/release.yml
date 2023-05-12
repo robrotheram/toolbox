@@ -57,7 +57,6 @@ jobs:
       uses: actions/checkout@v3
     - name: Install
       run: tar -cvf coder.tar main.tf README.md 
-
     - name: release
       run: |
           gh release create ${{ github.ref }} coder.tar
