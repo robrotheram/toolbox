@@ -94,6 +94,11 @@ provider "kubernetes" {
   config_path = var.use_kubeconfig == true ? "~/.kube/config" : null
 }
 
+data "coder_git_auth" "github" {
+  # Matches the ID of the git auth provider in Coder.
+  id = "primary-github"
+}
+
 data "coder_workspace" "me" {}
 
 resource "coder_agent" "main" {
