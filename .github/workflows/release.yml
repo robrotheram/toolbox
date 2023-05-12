@@ -64,4 +64,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
       shell: bash
-      name: Creates a release in GitHub and uploads attachments
