@@ -84,7 +84,7 @@ data "coder_parameter" "dotfiles_url" {
   name        = "Dotfiles URL"
   description = "Personalize your workspace"
   type        = "string"
-  default     = ""
+  default     = "https://github.com/robrotheram/toolbox"
   mutable     = true 
   icon        = "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
 }
@@ -128,8 +128,7 @@ resource "coder_agent" "main" {
     # install and start code-server
     curl -fsSL https://code-server.dev/install.sh | sh -s
     code-server --auth none --port 13337 > /dev/null 2>&1 &
-
-    # use coder CLI to clone and install dotfiles
+    
     if [ -n "$DOTFILES_URI" ]; then
       echo "Installing dotfiles from $DOTFILES_URI"
       coder dotfiles -y "$DOTFILES_URI"
