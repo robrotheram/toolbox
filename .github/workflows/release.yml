@@ -59,23 +59,9 @@ jobs:
       run: tar -cvf coder.tar main.tf README.md 
 
     - name: release
-      uses: actions/create-release@v1
-      id: create_release
-      with:
-        draft: false
-        prerelease: false
-        tag_name: ${{ github.ref }}
-        body_path: CHANGELOG.md
+      run: |
+          gh release create ${{ github.ref }} coder.tar
       env:
-        GITHUB_TOKEN: ${{ github.token }}
-
-    - name: upload linux artifact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./coder.tar
-        asset_name: coder.tar
-        asset_content_type: application/x-tar
-          
+        GITHUB_TOKEN: ${{ github.TOKEN }}
+      shell: bash
+      name: Creates a release in GitHub and uploads attachments
