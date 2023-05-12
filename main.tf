@@ -135,19 +135,6 @@ resource "coder_agent" "main" {
       coder dotfiles -y "$DOTFILES_URI"
     fi
 
-    # pull the nginx image and expose on port with hello world template
-    if [ "$(docker ps -a -q -f name='my-nginx-container')" ]; then
-      docker start my-nginx-container
-    else
-      docker run --name my-nginx-container -v ./templates:/etc/nginx/templates -d -p 8080:80 nginx
-    fi 
-
-    # start python web server
-    python3 -m http.server > /dev/null 2>&1 &
-
-    # resources
-    # https://hub.docker.com/_/nginx
-    # https://docs.docker.com/engine/reference/commandline/run/
   EOT
 }
 
