@@ -47,3 +47,18 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install
+      run: tar -cvf coder.tar main.tf README.md 
+    - name: Release Firmware
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: coder.tar
+        generateReleaseNotes: true
+        allowUpdates: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+          
