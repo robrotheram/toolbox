@@ -225,7 +225,7 @@ resource "kubernetes_pod" "main" {
 
       env {
         name  = "CODER_INNER_IMAGE"
-        value = "index.ghcr.io/robrotheram/toolbox:latest@sha256:069e84783d134841cbb5007a16d9025b6aed67bc5b95eecc118eb96dccd6de68"
+        value = "ghcr.io/robrotheram/toolbox:latest"
       }
 
       env {
