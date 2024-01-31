@@ -1,6 +1,6 @@
 FROM index.docker.io/codercom/enterprise-base:ubuntu
 LABEL org.opencontainers.image.source="https://github.com/robrotheram/toolbox"
-ENV GO_VERSION="1.20.6"
+ENV GO_VERSION="1.21.4"
 ENV GO_ARCH="amd64"
 ENV HELM_VERSION="3.12.0"
 ENV KUBE_VERSION="v1.27.1"
