@@ -1,0 +1,14 @@
+version = 1
+
+[[tools]]
+name = "kubectl"
+source = "builtin"
+version = "1.30.2"
+
+[[tools]]
+name = "helm"
+source = "builtin"
+version = "3.15.2"
+installed kubectl@1.30.2 -> /home/robert/.local/bin/kubectl
+error: install helm: unsupported archive format for /home/robert/.cache/toolbox/toolbox-3892409283/artifact
+exit status 1
