@@ -124,16 +124,16 @@ func (m Manager) installRequest(tool config.Tool, dryRun bool) (install.Request,
 			return install.Request{}, "", "", err
 		}
 		req := install.Request{
-			Name:          tool.Name,
-			Version:       resolved.Version,
-			BinaryName:    resolved.BinaryName,
-			DownloadURL:   resolved.DownloadURL,
-			PackageType:   resolved.PackageType,
-			ArchiveBinary: resolved.ArchiveBinary,
-			SHA256:        tool.SHA256,
-			DestDir:       m.Dirs.BinDir,
-			CacheDir:      m.Dirs.CacheDir,
-			DryRun:        dryRun,
+			Name:            tool.Name,
+			Version:         resolved.Version,
+			BinaryName:      resolved.BinaryName,
+			DownloadURL:     resolved.DownloadURL,
+			PackageType:     resolved.PackageType,
+			ArchiveBinaries: resolved.ArchiveBinaries,
+			SHA256:          tool.SHA256,
+			DestDir:         m.Dirs.BinDir,
+			CacheDir:        m.Dirs.CacheDir,
+			DryRun:          dryRun,
 		}
 		return req, config.SourceBuiltin, resolved.DownloadURL, nil
 	case config.SourceCustom:
@@ -142,22 +142,37 @@ func (m Manager) installRequest(tool config.Tool, dryRun bool) (install.Request,
 		if binaryName == "" {
 			binaryName = tool.Name
 		}
-		archiveBinary := interpolate(tool.ArchiveBinary, m.Target, tool.Version)
+
+		var archiveBinaries []string
+		for _, bin := range splitCSV(tool.ArchiveBinaries) {
+			archiveBinaries = append(archiveBinaries, interpolate(bin, m.Target, tool.Version))
+		}
+
 		return install.Request{
-			Name:          tool.Name,
-			Version:       tool.Version,
-			BinaryName:    filepath.Base(binaryName),
-			DownloadURL:   url,
-			PackageType:   tool.Type,
-			ArchiveBinary: archiveBinary,
-			SHA256:        tool.SHA256,
-			DestDir:       m.Dirs.BinDir,
-			CacheDir:      m.Dirs.CacheDir,
-			DryRun:        dryRun,
+			Name:            tool.Name,
+			Version:         tool.Version,
+			BinaryName:      filepath.Base(binaryName),
+			DownloadURL:     url,
+			PackageType:     tool.Type,
+			ArchiveBinaries: archiveBinaries,
+			SHA256:          tool.SHA256,
+			DestDir:         m.Dirs.BinDir,
+			CacheDir:        m.Dirs.CacheDir,
+			DryRun:          dryRun,
 		}, config.SourceCustom, url, nil
 	default:
 		return install.Request{}, "", "", fmt.Errorf("unknown source %q", tool.Source)
 	}
+}
+
+func splitCSV(s string) []string {
+	var result []string
+	for _, part := range strings.Split(s, ",") {
+		if v := strings.TrimSpace(part); v != "" {
+			result = append(result, v)
+		}
+	}
+	return result
 }
 
 func interpolate(value string, target platform.Target, version string) string {

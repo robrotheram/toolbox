@@ -45,9 +45,10 @@ func applyDefaults(cfg *Config) {
 		cfg.Tools[i].Version = strings.TrimSpace(cfg.Tools[i].Version)
 		cfg.Tools[i].URL = strings.TrimSpace(cfg.Tools[i].URL)
 		cfg.Tools[i].Type = strings.ToLower(strings.TrimSpace(cfg.Tools[i].Type))
-		cfg.Tools[i].ArchiveBinary = strings.TrimSpace(cfg.Tools[i].ArchiveBinary)
 		cfg.Tools[i].BinaryName = strings.TrimSpace(cfg.Tools[i].BinaryName)
 		cfg.Tools[i].SHA256 = strings.TrimSpace(cfg.Tools[i].SHA256)
+		
+		cfg.Tools[i].ArchiveBinaries = strings.TrimSpace(cfg.Tools[i].ArchiveBinaries)
 
 		if cfg.Tools[i].Source == "" {
 			cfg.Tools[i].Source = SourceBuiltin
@@ -94,8 +95,8 @@ func validate(cfg Config) error {
 			if t.Type != ToolTypeBinary && t.Type != ToolTypeArchive {
 				return fmt.Errorf("tools[%d]: type must be %q or %q", idx, ToolTypeBinary, ToolTypeArchive)
 			}
-			if t.Type == ToolTypeArchive && t.ArchiveBinary == "" {
-				return fmt.Errorf("tools[%d]: archive_binary is required for archive tools", idx)
+			if t.Type == ToolTypeArchive && t.ArchiveBinaries == "" {
+				return fmt.Errorf("tools[%d]: archive_binaries is required for archive tools", idx)
 			}
 		}
 	}

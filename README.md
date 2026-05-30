@@ -87,15 +87,23 @@ version = "2.1.0"
 url     = "https://example.com/my-tool-{{os}}-{{arch}}-{{version}}"
 # sha256 = "optional-checksum"
 
-# Custom tool — archive download
+# Custom tool — archive download (single binary)
 [[tools]]
-name           = "another-tool"
-source         = "custom"
-type           = "archive"
-version        = "1.0.0"
-url            = "https://example.com/another-tool-{{os}}-{{arch}}-{{version}}.tar.gz"
-archive_binary = "another-tool"        # path inside the archive to extract
-binary_name    = "another-tool"        # name to install as (defaults to name)
+name             = "another-tool"
+source           = "custom"
+type             = "archive"
+version          = "1.0.0"
+url              = "https://example.com/another-tool-{{os}}-{{arch}}-{{version}}.tar.gz"
+archive_binaries = "another-tool"    # path inside the archive to extract
+
+# Custom tool — archive with multiple binaries
+[[tools]]
+name             = "uv"
+source           = "custom"
+type             = "archive"
+version          = "0.1.0"
+url              = "https://github.com/astral-sh/uv/releases/download/{{version}}/uv-{{arch}}-unknown-{{os}}-gnu.tar.gz"
+archive_binaries = "uv, uvx"          # extract multiple binaries from the archive
 ```
 
 ### URL placeholders

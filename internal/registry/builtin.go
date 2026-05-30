@@ -10,12 +10,12 @@ import (
 )
 
 type ResolvedTool struct {
-	Name          string
-	Version       string
-	BinaryName    string
-	DownloadURL   string
-	PackageType   string
-	ArchiveBinary string
+	Name            string
+	Version         string
+	BinaryName      string
+	DownloadURL     string
+	PackageType     string
+	ArchiveBinaries []string
 }
 
 type builtinDef struct {
@@ -42,12 +42,12 @@ var builtins = map[string]builtinDef{
 		Resolve: func(version string, target platform.Target) ResolvedTool {
 			v := trimV(version)
 			return ResolvedTool{
-				Name:          "helm",
-				Version:       v,
-				BinaryName:    "helm",
-				DownloadURL:   fmt.Sprintf("https://get.helm.sh/helm-v%s-%s-%s.tar.gz", v, target.OS, target.Arch),
-				PackageType:   config.ToolTypeArchive,
-				ArchiveBinary: fmt.Sprintf("%s-%s/helm", target.OS, target.Arch),
+				Name:            "helm",
+				Version:         v,
+				BinaryName:      "helm",
+				DownloadURL:     fmt.Sprintf("https://get.helm.sh/helm-v%s-%s-%s.tar.gz", v, target.OS, target.Arch),
+				PackageType:     config.ToolTypeArchive,
+				ArchiveBinaries: []string{fmt.Sprintf("%s-%s/helm", target.OS, target.Arch)},
 			}
 		},
 	},
@@ -56,12 +56,12 @@ var builtins = map[string]builtinDef{
 		Resolve: func(version string, target platform.Target) ResolvedTool {
 			v := trimV(version)
 			return ResolvedTool{
-				Name:          "k9s",
-				Version:       v,
-				BinaryName:    "k9s",
-				DownloadURL:   fmt.Sprintf("https://github.com/derailed/k9s/releases/download/v%s/k9s_%s_%s.tar.gz", v, toTitleOS(target.OS), target.Arch),
-				PackageType:   config.ToolTypeArchive,
-				ArchiveBinary: "k9s",
+				Name:            "k9s",
+				Version:         v,
+				BinaryName:      "k9s",
+				DownloadURL:     fmt.Sprintf("https://github.com/derailed/k9s/releases/download/v%s/k9s_%s_%s.tar.gz", v, toTitleOS(target.OS), target.Arch),
+				PackageType:     config.ToolTypeArchive,
+				ArchiveBinaries: []string{"k9s"},
 			}
 		},
 	},
@@ -70,12 +70,12 @@ var builtins = map[string]builtinDef{
 		Resolve: func(version string, target platform.Target) ResolvedTool {
 			v := trimV(version)
 			return ResolvedTool{
-				Name:          "k6",
-				Version:       v,
-				BinaryName:    "k6",
-				DownloadURL:   fmt.Sprintf("https://github.com/grafana/k6/releases/download/v%s/k6-v%s-%s-%s.tar.gz", v, v, target.OS, target.Arch),
-				PackageType:   config.ToolTypeArchive,
-				ArchiveBinary: fmt.Sprintf("k6-v%s-%s-%s/k6", v, target.OS, target.Arch),
+				Name:            "k6",
+				Version:         v,
+				BinaryName:      "k6",
+				DownloadURL:     fmt.Sprintf("https://github.com/grafana/k6/releases/download/v%s/k6-v%s-%s-%s.tar.gz", v, v, target.OS, target.Arch),
+				PackageType:     config.ToolTypeArchive,
+				ArchiveBinaries: []string{fmt.Sprintf("k6-v%s-%s-%s/k6", v, target.OS, target.Arch)},
 			}
 		},
 	},
@@ -98,12 +98,12 @@ var builtins = map[string]builtinDef{
 			v := trimV(version)
 			triple := toSecretspecTarget(target)
 			return ResolvedTool{
-				Name:          "secretspec",
-				Version:       v,
-				BinaryName:    "secretspec",
-				DownloadURL:   fmt.Sprintf("https://github.com/cachix/secretspec/releases/download/v%s/secretspec-%s.tar.xz", v, triple),
-				PackageType:   config.ToolTypeArchive,
-				ArchiveBinary: "secretspec",
+				Name:            "secretspec",
+				Version:         v,
+				BinaryName:      "secretspec",
+				DownloadURL:     fmt.Sprintf("https://github.com/cachix/secretspec/releases/download/v%s/secretspec-%s.tar.xz", v, triple),
+				PackageType:     config.ToolTypeArchive,
+				ArchiveBinaries: []string{"secretspec"},
 			}
 		},
 	},

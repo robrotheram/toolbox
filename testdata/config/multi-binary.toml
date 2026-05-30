@@ -1,0 +1,22 @@
+version = 1
+
+[defaults]
+bin_dir = "~/.local/bin"
+state_dir = "~/.local/share/toolbox"
+cache_dir = "~/.cache/toolbox"
+auto_path = true
+
+# Example: Python uv with multiple binaries
+[[tools]]
+name = "uv"
+source = "custom"
+type = "archive"
+version = "0.1.0"
+url = "https://github.com/astral-sh/uv/releases/download/{{version}}/uv-{{arch}}-unknown-{{os}}-gnu.tar.gz"
+archive_binaries = "uv, uvx"
+
+# Example: Single binary (backward compatibility)
+[[tools]]
+name = "kubectl"
+source = "builtin"
+version = "1.30.2"

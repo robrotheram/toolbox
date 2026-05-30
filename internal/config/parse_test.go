@@ -11,7 +11,7 @@ name = "demo"
 source = "custom"
 version = "1.2.3"
 url = "https://example.com/demo-{{os}}-{{arch}}.tar.gz"
-archive_binary = "demo"
+archive_binaries = "demo"
 `)
 
 	cfg, err := Parse(input)
